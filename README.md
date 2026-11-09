@@ -10,7 +10,7 @@ The original game is at https://pmotschmann.github.io/Evolve/. To move a save ov
 
 ## Dev Console
 
-The same tools are in **Settings → Dev Tools**, or open the browser console on the game page and run `dev.help()`.
+Game speed and Fill are in the top bar. All tools are in **Settings → Dev Tools**, or open the browser console on the game page and run `dev.help()`.
 
 ```unknown
 dev.speed(n)       # run the game n times faster (1 = normal), saved with your game
