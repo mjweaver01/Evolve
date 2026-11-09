@@ -166,6 +166,7 @@
   "dev_atime": "Add Accelerated Days",
   "dev_add": "Add Resource",
   "dev_fill": "Fill All Resources",
+  "dev_fill_short": "Fill",
   "dev_run": "Go",
   "import_export": "Import/Export Save",
   "boring": "Disable Special Events",

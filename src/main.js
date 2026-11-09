@@ -585,6 +585,12 @@ vBind({
         pausedesc(){
             return global.settings.pause ? loc('game_play') : loc('game_pause');
         },
+        devSpeed(n){
+            window.dev.speed(n);
+        },
+        devFill(){
+            window.dev.fill();
+        },
         showPet(){
             return global.race['pet'] ? true : false;
         },

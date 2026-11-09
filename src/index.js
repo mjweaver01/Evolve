@@ -941,6 +941,15 @@ export function index(){
                     <span id="pausegame"></span>
                 </span>
             </span>
+            <span class="devBar">
+                <b-dropdown hoverable position="is-bottom-left">
+                    <span role="button" class="devSpeed has-text-warning" slot="trigger" aria-label="${loc('dev_speed')}">{{ s.devSpeed }}x</span>
+                    ${[1,2,5,10,25,50].map((n) => `<b-dropdown-item v-on:click="devSpeed(${n})">${n}x</b-dropdown-item>`).join('')}
+                </b-dropdown>
+                <b-tooltip label="${loc('dev_fill')}" position="is-bottom" size="is-small" animated>
+                    <span role="button" class="devFill has-text-advanced" @click="devFill" aria-label="${loc('dev_fill')}">${loc('dev_fill_short')}</span>
+                </b-tooltip>
+            </span>
         </span>
         <span class="version" id="versionLog"><a href="wiki.html#changelog" target="_blank"></a></span>
     </div>`);
