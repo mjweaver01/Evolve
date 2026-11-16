@@ -188,6 +188,9 @@ export function mainVue(){
             devFill(){
                 window.dev.fill();
             },
+            devAutoFill(){
+                window.dev.autofill();
+            },
             devListRes(){
                 this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display).concat(['Plasmid','Phage'].filter((r) => global.prestige[r].count > 0));
             },
@@ -949,6 +952,9 @@ export function index(){
                 <b-tooltip label="${loc('dev_fill')}" position="is-bottom" size="is-small" animated>
                     <span role="button" class="devFill has-text-advanced" @click="devFill" aria-label="${loc('dev_fill')}">${loc('dev_fill_short')}</span>
                 </b-tooltip>
+                <b-tooltip label="${loc('dev_autofill')}" position="is-bottom" size="is-small" animated>
+                    <span role="button" class="devFill" :class="s.devAutoFill ? 'has-text-success' : 'has-text-advanced'" @click="devAutoFill" :aria-pressed="s.devAutoFill ? 'true' : 'false'" aria-label="${loc('dev_autofill')}">${loc('dev_autofill_short')}</span>
+                </b-tooltip>
             </span>
         </span>
         <span class="version" id="versionLog"><a href="wiki.html#changelog" target="_blank"></a></span>
@@ -1483,6 +1489,7 @@ export function index(){
                 <button class="button" @click="devAdd">${loc('dev_run')}</button>
             </div>
             <div class="devRow"><button class="button" @click="devFill">${loc('dev_fill')}</button></div>
+            <div class="devRow"><b-switch class="setting" v-model="s.devAutoFill">${loc('dev_autofill')}</b-switch></div>
         </div>
         <div class="stringPack setting">
             <button id="stringPack" class="button" @click="importStringFile">{{ 'load_string_pack' | label }}</button>

@@ -591,6 +591,9 @@ vBind({
         devFill(){
             window.dev.fill();
         },
+        devAutoFill(){
+            window.dev.autofill();
+        },
         showPet(){
             return global.race['pet'] ? true : false;
         },
@@ -887,6 +890,9 @@ resourceAlt();
 var firstRun = true;
 var gene_sequence = global.arpa['sequence'] && global.arpa['sequence']['on'] ? global.arpa.sequence.on : 0;
 function fastLoop(){
+    if (global.settings.devAutoFill){
+        window.dev.fill();
+    }
     if (!global.race['no_craft']){
         $('.craft').each(function(e){
             if (typeof $(this).data('val') === 'number'){

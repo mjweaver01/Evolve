@@ -115,6 +115,11 @@ export function enableDevTools(execGameLoops){
             });
             return name ? `${global.resource[findRes(name)].name} filled` : 'All capped resources filled';
         },
+        // Toggle keeping every capped resource full each tick. Saved with the game's settings.
+        autofill(){
+            global.settings.devAutoFill = !global.settings.devAutoFill;
+            return `Auto-fill: ${global.settings.devAutoFill ? 'on' : 'off'}`;
+        },
         // List unlocked resources with current amount and cap.
         list(){
             let table = {};
@@ -130,6 +135,7 @@ export function enableDevTools(execGameLoops){
                 'dev.atime(days)    - add built-in accelerated time (2x)',
                 'dev.add(res, n)    - add n of a resource (or Plasmid/Phage), capped at storage',
                 'dev.fill(res?)     - fill a resource (or all) to storage cap',
+                'dev.autofill()     - toggle keeping all resources full',
                 'dev.list()         - show unlocked resources',
             ].join('\n');
         },
