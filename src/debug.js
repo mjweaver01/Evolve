@@ -94,7 +94,13 @@ export function enableDevTools(execGameLoops){
             return `Accelerated time: ${global.settings.at} days`;
         },
         // Add an amount of a resource, e.g. dev.add('Lumber', 5000). Clamped to storage cap.
+        // Plasmids and Phage are prestige currencies with no storage cap, so they bypass global.resource.
         add(name, amount){
+            let prestige = ['Plasmid','Phage'].find((r) => r.toLowerCase() === String(name).toLowerCase());
+            if (prestige){
+                global.prestige[prestige].count = Math.max(0, global.prestige[prestige].count + amount);
+                return `${prestige}: ${global.prestige[prestige].count}`;
+            }
             let res = global.resource[findRes(name)];
             let count = res.amount + amount;
             res.amount = res.max >= 0 ? Math.min(count, res.max) : count;
@@ -122,7 +128,7 @@ export function enableDevTools(execGameLoops){
                 'dev.speed(n)       - run the game n times faster (1 = normal), saved',
                 'dev.skip(days)     - instantly simulate that many game days',
                 'dev.atime(days)    - add built-in accelerated time (2x)',
-                'dev.add(res, n)    - add n of a resource, capped at storage',
+                'dev.add(res, n)    - add n of a resource (or Plasmid/Phage), capped at storage',
                 'dev.fill(res?)     - fill a resource (or all) to storage cap',
                 'dev.list()         - show unlocked resources',
             ].join('\n');
