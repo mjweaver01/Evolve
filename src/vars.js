@@ -1532,6 +1532,9 @@ if (typeof global.settings.expose === 'undefined'){
 if (typeof global.settings.devSpeed === 'undefined'){
     global.settings['devSpeed'] = 1;
 }
+if (typeof global.settings.devAutoFill === 'undefined'){
+    global.settings['devAutoFill'] = false;
+}
 if (typeof global.settings.alwaysPower === 'undefined'){
     global.settings['alwaysPower'] = false;
 }
