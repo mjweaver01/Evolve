@@ -189,7 +189,7 @@ export function mainVue(){
                 window.dev.fill();
             },
             devListRes(){
-                this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display);
+                this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display).concat(['Plasmid','Phage'].filter((r) => global.prestige[r].count > 0));
             },
             devAdd(){
                 let res = $('#devAddRes').val();
