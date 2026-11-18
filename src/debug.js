@@ -58,6 +58,16 @@ export function enableDevTools(execGameLoops){
     const unlocked = function(){
         return Object.keys(global.resource).filter((r) => global.resource[r].display);
     };
+    // Spire supplies live on the purifier rather than in global.resource.
+    const isSupply = function(name){
+        return ['supply','supplies'].includes(String(name).toLowerCase());
+    };
+    const purifier = function(){
+        if (!global.portal['purifier']){
+            throw new Error('Spire supplies are not unlocked');
+        }
+        return global.portal.purifier;
+    };
 
     webWorker.speed = global.settings.devSpeed;
 
@@ -95,7 +105,13 @@ export function enableDevTools(execGameLoops){
         },
         // Add an amount of a resource, e.g. dev.add('Lumber', 5000). Clamped to storage cap.
         // Plasmids and Phage are prestige currencies with no storage cap, so they bypass global.resource.
+        // Spire supplies (dev.add('Supply', n)) are capped at the purifier's max.
         add(name, amount){
+            if (isSupply(name)){
+                let p = purifier();
+                p.supply = Math.max(0, Math.min(p.supply + amount, p.sup_max));
+                return `Supplies: ${p.supply}`;
+            }
             let prestige = ['Plasmid','Phage'].find((r) => r.toLowerCase() === String(name).toLowerCase());
             if (prestige){
                 global.prestige[prestige].count = Math.max(0, global.prestige[prestige].count + amount);
@@ -108,6 +124,14 @@ export function enableDevTools(execGameLoops){
         },
         // Fill one resource, or every unlocked resource, to its storage cap.
         fill(name){
+            if (isSupply(name)){
+                let p = purifier();
+                p.supply = p.sup_max;
+                return 'Supplies filled';
+            }
+            if (!name && global.portal['purifier']){
+                global.portal.purifier.supply = global.portal.purifier.sup_max;
+            }
             (name ? [findRes(name)] : unlocked()).forEach(function(r){
                 if (global.resource[r].max >= 0){
                     global.resource[r].amount = global.resource[r].max;
@@ -126,6 +150,9 @@ export function enableDevTools(execGameLoops){
             unlocked().forEach(function(r){
                 table[r] = { amount: global.resource[r].amount, max: global.resource[r].max };
             });
+            if (global.portal['purifier']){
+                table['Supply'] = { amount: global.portal.purifier.supply, max: global.portal.purifier.sup_max };
+            }
             console.table(table);
         },
         help(){
@@ -133,8 +160,8 @@ export function enableDevTools(execGameLoops){
                 'dev.speed(n)       - run the game n times faster (1 = normal), saved',
                 'dev.skip(days)     - instantly simulate that many game days',
                 'dev.atime(days)    - add built-in accelerated time (2x)',
-                'dev.add(res, n)    - add n of a resource (or Plasmid/Phage), capped at storage',
-                'dev.fill(res?)     - fill a resource (or all) to storage cap',
+                'dev.add(res, n)    - add n of a resource (or Plasmid/Phage/Supply), capped at storage',
+                'dev.fill(res?)     - fill a resource (or all, incl. Supply) to storage cap',
                 'dev.autofill()     - toggle keeping all resources full',
                 'dev.list()         - show unlocked resources',
             ].join('\n');
