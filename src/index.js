@@ -192,7 +192,7 @@ export function mainVue(){
                 window.dev.autofill();
             },
             devListRes(){
-                this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display).concat(['Plasmid','Phage'].filter((r) => global.prestige[r].count > 0));
+                this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display).concat(['Plasmid','Phage'].filter((r) => global.prestige[r].count > 0)).concat(global.portal['purifier'] ? ['Supply'] : []);
             },
             devAdd(){
                 let res = $('#devAddRes').val();
