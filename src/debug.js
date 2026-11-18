@@ -69,6 +69,13 @@ export function enableDevTools(execGameLoops){
         return global.portal.purifier;
     };
 
+    // Prestige currencies live in global.prestige and have no storage cap.
+    const prestigeKeys = ['Plasmid','AntiPlasmid','Phage','Dark','Harmony','AICore','Artifact','Blood_Stone','Supercoiled'];
+    const findPrestige = function(name){
+        let norm = String(name).toLowerCase().replace(/ /g,'_');
+        return prestigeKeys.find((r) => r.toLowerCase() === norm);
+    };
+
     webWorker.speed = global.settings.devSpeed;
 
     window.dev = {
@@ -104,7 +111,7 @@ export function enableDevTools(execGameLoops){
             return `Accelerated time: ${global.settings.at} days`;
         },
         // Add an amount of a resource, e.g. dev.add('Lumber', 5000). Clamped to storage cap.
-        // Plasmids and Phage are prestige currencies with no storage cap, so they bypass global.resource.
+        // Prestige currencies (Plasmid, Phage, Blood_Stone, ...) have no storage cap, so they bypass global.resource.
         // Spire supplies (dev.add('Supply', n)) are capped at the purifier's max.
         add(name, amount){
             if (isSupply(name)){
@@ -112,7 +119,7 @@ export function enableDevTools(execGameLoops){
                 p.supply = Math.max(0, Math.min(p.supply + amount, p.sup_max));
                 return `Supplies: ${p.supply}`;
             }
-            let prestige = ['Plasmid','Phage'].find((r) => r.toLowerCase() === String(name).toLowerCase());
+            let prestige = findPrestige(name);
             if (prestige){
                 global.prestige[prestige].count = Math.max(0, global.prestige[prestige].count + amount);
                 return `${prestige}: ${global.prestige[prestige].count}`;
@@ -160,7 +167,7 @@ export function enableDevTools(execGameLoops){
                 'dev.speed(n)       - run the game n times faster (1 = normal), saved',
                 'dev.skip(days)     - instantly simulate that many game days',
                 'dev.atime(days)    - add built-in accelerated time (2x)',
-                'dev.add(res, n)    - add n of a resource (or Plasmid/Phage/Supply), capped at storage',
+                'dev.add(res, n)    - add n of a resource (or a prestige currency/Supply), capped at storage',
                 'dev.fill(res?)     - fill a resource (or all, incl. Supply) to storage cap',
                 'dev.autofill()     - toggle keeping all resources full',
                 'dev.list()         - show unlocked resources',

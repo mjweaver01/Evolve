@@ -192,7 +192,7 @@ export function mainVue(){
                 window.dev.autofill();
             },
             devListRes(){
-                this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display).concat(['Plasmid','Phage'].filter((r) => global.prestige[r].count > 0)).concat(global.portal['purifier'] ? ['Supply'] : []);
+                this.devRes = Object.keys(global.resource).filter((r) => global.resource[r].display).concat(['Plasmid','AntiPlasmid','Phage','Dark','Harmony','AICore','Artifact','Blood_Stone','Supercoiled'].filter((r) => global.prestige[r].count > 0)).concat(global.portal['purifier'] ? ['Supply'] : []);
             },
             devAdd(){
                 let res = $('#devAddRes').val();
